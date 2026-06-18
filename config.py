@@ -1,0 +1,27 @@
+import os
+
+# ==============================
+#  إعدادات البوت - غيّر هذه القيم
+# ==============================
+
+BOT_TOKEN = os.getenv("BOT_TOKEN", "ضع_توكن_البوت_هنا")
+ADMIN_ID  = int(os.getenv("ADMIN_ID", "123456789"))  # معرف حسابك في تيليغرام
+
+# ==============================
+#  إعدادات SMM Panel API
+# ==============================
+SMM_API_URL = os.getenv("SMM_API_URL", "https://smmcpan.com/api/v2")
+SMM_API_KEY = os.getenv("SMM_API_KEY", "ضع_مفتاح_API_هنا")
+
+# ==============================
+#  إعدادات الدفع
+# ==============================
+USDT_ADDRESS   = os.getenv("USDT_ADDRESS", "عنوان_USDT_TRC20_هنا")
+BINANCE_ID     = os.getenv("BINANCE_ID", "Binance_Pay_ID_هنا")
+
+# ==============================
+#  إعدادات عامة
+# ==============================
+CURRENCY       = "USD"
+MIN_DEPOSIT    = 1.0    # أقل مبلغ شحن بالدولار
+SUPPORT_USERNAME = "@اسم_حساب_الدعم"
