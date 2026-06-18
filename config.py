@@ -4,14 +4,14 @@ import os
 #  إعدادات البوت - غيّر هذه القيم
 # ==============================
 
-BOT_TOKEN = os.getenv("BOT_TOKEN", "ضع_توكن_البوت_هنا")
-ADMIN_ID  = int(os.getenv("ADMIN_ID", "123456789"))  # معرف حسابك في تيليغرام
+BOT_TOKEN = os.getenv("BOT_TOKEN", "8731640232:AAHMf1J2fPB-xEjHBEMVEMLnELhZwHwx2bM")
+ADMIN_ID  = int(os.getenv("ADMIN_ID", "8605635198"))  # معرف حسابك في تيليغرام
 
 # ==============================
 #  إعدادات SMM Panel API
 # ==============================
-SMM_API_URL = os.getenv("SMM_API_URL", "https://smmcpan.com/api/v2")
-SMM_API_KEY = os.getenv("SMM_API_KEY", "ضع_مفتاح_API_هنا")
+SMM_API_URL = os.getenv("SMM_API_URL", "https://beinty.com/api/v2")
+SMM_API_KEY = os.getenv("SMM_API_KEY", "bnt_9154209dc5403f2699dddc5abf887aa954be70b0")
 
 # ==============================
 #  إعدادات الدفع
@@ -24,4 +24,4 @@ BINANCE_ID     = os.getenv("BINANCE_ID", "Binance_Pay_ID_هنا")
 # ==============================
 CURRENCY       = "USD"
 MIN_DEPOSIT    = 1.0    # أقل مبلغ شحن بالدولار
-SUPPORT_USERNAME = "@اسم_حساب_الدعم"
+SUPPORT_USERNAME = "@aliibunny"
