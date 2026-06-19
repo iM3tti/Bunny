@@ -555,9 +555,9 @@ def main():
     # محادثة الشحن
     deposit_conv = ConversationHandler(
         entry_points=[
-            CallbackQueryHandler(pay_usdt,    pattern="^pay_usdt$"),
-            CallbackQueryHandler(pay_binance, pattern="^pay_binance$"),
-        ],
+    CallbackQueryHandler(pay_mastercard, pattern="^pay_mastercard$"),
+    CallbackQueryHandler(pay_asiacell,   pattern="^pay_asiacell$"),
+],
         states={
             WAIT_DEPOSIT_AMOUNT: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_deposit_amount)],
             WAIT_DEPOSIT_PROOF:  [MessageHandler(filters.PHOTO | filters.TEXT,    receive_deposit_proof)],
