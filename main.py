@@ -321,30 +321,29 @@ async def add_funds(update, context):
     )
 
 
-async def pay_usdt(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def pay_mastercard(update, context):
     q = update.callback_query
     await q.answer()
-    context.user_data["pay_method"] = "USDT"
+    context.user_data["pay_method"] = "Mastercard"
     await q.edit_message_text(
-        "💎 *الدفع عبر USDT TRC20*\n\n"
-        f"📋 العنوان:\n`{USDT_ADDRESS}`\n\n"
+        "💳 *الدفع عبر ماستر كارد*\n\n"
+        f"رقم البطاقة:\n`{MASTERCARD_NUMBER}`\n\n"
         f"⚠️ الحد الأدنى: `{MIN_DEPOSIT}$`\n\n"
-        "بعد التحويل، أرسل *المبلغ* الذي دفعته (مثال: 5):",
+        "بعد التحويل أرسل *المبلغ* الذي دفعته:",
         reply_markup=back_btn("add_funds"),
         parse_mode="Markdown"
     )
     return WAIT_DEPOSIT_AMOUNT
 
-
-async def pay_binance(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def pay_asiacell(update, context):
     q = update.callback_query
     await q.answer()
-    context.user_data["pay_method"] = "Binance"
+    context.user_data["pay_method"] = "Asiacell"
     await q.edit_message_text(
-        "🟡 *الدفع عبر اسياسيل*\n\n"
-        f"رقم التحويل :\n`{"07777734322"}`\n\n"
-        f"⚠️ الحد الأدنى: `{"1000"}$`\n\n"
-        "بعد التحويل، أرسل *المبلغ* الذي دفعته (مثال: 5):",
+        "📱 *الدفع عبر آسياسيل كاش*\n\n"
+        f"رقم الهاتف:\n`{ASIACELL_NUMBER}`\n\n"
+        f"⚠️ الحد الأدنى: `{MIN_DEPOSIT}$`\n\n"
+        "بعد التحويل أرسل *المبلغ* الذي دفعته:",
         reply_markup=back_btn("add_funds"),
         parse_mode="Markdown"
     )
