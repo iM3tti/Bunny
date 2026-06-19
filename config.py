@@ -16,7 +16,7 @@ SMM_API_KEY = os.getenv("SMM_API_KEY", "bnt_9154209dc5403f2699dddc5abf887aa954be
 # ==============================
 #  إعدادات الدفع
 # ==============================
-USDT_ADDRESS   = os.getenv("USDT_ADDRESS", "عنوان_USDT_TRC20_هنا")
+ماستر كارد الرافدين   = os.getenv("USDT_ADDRESS", "عنوان_USDT_TRC20_هنا")
 BINANCE_ID     = os.getenv("BINANCE_ID", "Binance_Pay_ID_هنا")
 
 # ==============================
