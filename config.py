@@ -16,8 +16,8 @@ SMM_API_KEY = os.getenv("SMM_API_KEY", "bnt_9154209dc5403f2699dddc5abf887aa954be
 # ==============================
 #  إعدادات الدفع
 # ==============================
-MASTERCARD_RAFIDAIN   = os.getenv("MASTERCARD_RAFIDAIN", "1444838443")
-BINANCE_ID     = os.getenv("BINANCE_ID", "Binance_Pay_ID_هنا")
+MASTERCARD_NUMBER = os.getenv("MASTERCARD_NUMBER", "")
+ASIACELL_NUMBER = os.getenv("ASIACELL_NUMBER", "")
 
 # ==============================
 #  إعدادات عامة
