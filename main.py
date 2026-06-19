@@ -306,13 +306,13 @@ async def my_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ══════════════════════════════════════════
 #  شحن الرصيد
 # ══════════════════════════════════════════
-async def add_funds(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def add_funds(update, context):
     q = update.callback_query
     await q.answer()
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("🇮🇶 ماستر كارد الرافدين",   callback_data="pay_mastercard")],
-        [InlineKeyboardButton("🇮🇶 اسياسيل",  callback_data="pay_asisell")],
-        [InlineKeyboardButton("🔙 رجوع",          callback_data="main_menu")],
+        [InlineKeyboardButton("💳 ماستر كارد", callback_data="pay_mastercard")],
+        [InlineKeyboardButton("📱 آسياسيل كاش", callback_data="pay_asiacell")],
+        [InlineKeyboardButton("🔙 رجوع", callback_data="main_menu")],
     ])
     await q.edit_message_text(
         "➕ *شحن الرصيد*\n\nاختر طريقة الدفع:",
