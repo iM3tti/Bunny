@@ -310,8 +310,8 @@ async def add_funds(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("💎 USDT TRC20",   callback_data="pay_usdt")],
-        [InlineKeyboardButton("🟡 Binance Pay",  callback_data="pay_binance")],
+        [InlineKeyboardButton("🇮🇶 ماستر كارد الرافدين",   callback_data="pay_mastercard")],
+        [InlineKeyboardButton("🇮🇶 اسياسيل",  callback_data="pay_asisell")],
         [InlineKeyboardButton("🔙 رجوع",          callback_data="main_menu")],
     ])
     await q.edit_message_text(
@@ -341,9 +341,9 @@ async def pay_binance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await q.answer()
     context.user_data["pay_method"] = "Binance"
     await q.edit_message_text(
-        "🟡 *الدفع عبر Binance Pay*\n\n"
-        f"🆔 معرف Binance Pay:\n`{BINANCE_ID}`\n\n"
-        f"⚠️ الحد الأدنى: `{MIN_DEPOSIT}$`\n\n"
+        "🟡 *الدفع عبر اسياسيل*\n\n"
+        f"رقم التحويل :\n`{07777734322}`\n\n"
+        f"⚠️ الحد الأدنى: `{1000}$`\n\n"
         "بعد التحويل، أرسل *المبلغ* الذي دفعته (مثال: 5):",
         reply_markup=back_btn("add_funds"),
         parse_mode="Markdown"
@@ -359,7 +359,7 @@ async def receive_deposit_amount(update: Update, context: ContextTypes.DEFAULT_T
         return WAIT_DEPOSIT_AMOUNT
 
     if amount < MIN_DEPOSIT:
-        await update.message.reply_text(f"❌ الحد الأدنى للشحن هو {MIN_DEPOSIT}$")
+        await update.message.reply_text(f"❌ الحد الأدنى للشحن هو {1000}$")
         return WAIT_DEPOSIT_AMOUNT
 
     context.user_data["deposit_amount"] = amount
