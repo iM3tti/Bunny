@@ -12,7 +12,7 @@ from telegram.ext import (
     MessageHandler, filters, ContextTypes, ConversationHandler
 )
 
-from config import BOT_TOKEN, ADMIN_ID, USDT_ADDRESS, BINANCE_ID, SUPPORT_USERNAME, MIN_DEPOSIT
+from config import BOT_TOKEN, ADMIN_ID, MASTERCARD_NUMBER, ASIACELL_NUMBER, SUPPORT_USERNAME, MIN_DEPOSIT
 import database as db
 import smm_api as api
 from services_catalog import PLATFORMS, find_service, calc_price
