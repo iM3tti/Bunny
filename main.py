@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """
- ╔══════════════════════════════════════════╗
- ║   بوت تيليغرام لبيع خدمات السوشيال ميديا ║
- ╚══════════════════════════════════════════╝
+ بوت تيليغرام لبيع خدمات السوشيال ميديا
 """
 
 import os
@@ -21,9 +19,6 @@ from services_catalog import PLATFORMS, find_service, calc_price
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ──────────────────────────────────────────
-#  حالات المحادثة
-# ──────────────────────────────────────────
 (
     WAIT_LINK, WAIT_QUANTITY,
     WAIT_DEPOSIT_AMOUNT, WAIT_DEPOSIT_PROOF,
@@ -31,16 +26,10 @@ logger = logging.getLogger(__name__)
 ) = range(5)
 
 
-# ══════════════════════════════════════════
-#  مساعد — بناء لوحة مفاتيح رجوع
-# ══════════════════════════════════════════
 def back_btn(data):
     return InlineKeyboardMarkup([[InlineKeyboardButton("🔙 رجوع", callback_data=data)]])
 
 
-# ══════════════════════════════════════════
-#  القائمة الرئيسية
-# ══════════════════════════════════════════
 async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     db.register_user(user.id, user.username or "", user.full_name)
@@ -71,9 +60,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await main_menu(update, context)
 
 
-# ══════════════════════════════════════════
-#  عرض الرصيد
-# ══════════════════════════════════════════
 async def show_balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
@@ -86,9 +72,6 @@ async def show_balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ══════════════════════════════════════════
-#  اختيار المنصة
-# ══════════════════════════════════════════
 async def show_platforms(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
@@ -110,9 +93,6 @@ async def show_platforms(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ══════════════════════════════════════════
-#  اختيار الخدمة
-# ══════════════════════════════════════════
 async def show_services(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
@@ -136,9 +116,6 @@ async def show_services(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ══════════════════════════════════════════
-#  اختيار خدمة → طلب الرابط
-# ══════════════════════════════════════════
 async def select_service(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
@@ -233,18 +210,12 @@ async def confirm_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await q.edit_message_text("❌ حدث خطأ، حاول مجدداً من البداية.")
         return
 
-    # خصم الرصيد
     db.update_balance(user_id, -price)
-
-    # حفظ الطلب في قاعدة البيانات
     order_id = db.create_order(user_id, svc["id"], svc["name"], link, qty, price)
-
-    # إرسال الطلب لـ SMM Panel
     result = api.create_order(svc["id"], link, qty)
     smm_id = str(result.get("order", "manual"))
     db.update_order_smm_id(order_id, smm_id, "processing")
 
-    # إشعار الأدمن
     try:
         await q.get_bot().send_message(
             ADMIN_ID,
@@ -271,9 +242,6 @@ async def confirm_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ══════════════════════════════════════════
-#  طلباتي
-# ══════════════════════════════════════════
 async def my_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
@@ -304,16 +272,13 @@ async def my_orders(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ══════════════════════════════════════════
-#  شحن الرصيد
-# ══════════════════════════════════════════
-async def add_funds(update, context):
+async def add_funds(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("💳 ماستر كارد", callback_data="pay_mastercard")],
+        [InlineKeyboardButton("💳 ماستر كارد",  callback_data="pay_mastercard")],
         [InlineKeyboardButton("📱 آسياسيل كاش", callback_data="pay_asiacell")],
-        [InlineKeyboardButton("🔙 رجوع", callback_data="main_menu")],
+        [InlineKeyboardButton("🔙 رجوع",         callback_data="main_menu")],
     ])
     await q.edit_message_text(
         "➕ *شحن الرصيد*\n\nاختر طريقة الدفع:",
@@ -322,7 +287,7 @@ async def add_funds(update, context):
     )
 
 
-async def pay_mastercard(update, context):
+async def pay_mastercard(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
     context.user_data["pay_method"] = "Mastercard"
@@ -336,7 +301,8 @@ async def pay_mastercard(update, context):
     )
     return WAIT_DEPOSIT_AMOUNT
 
-async def pay_asiacell(update, context):
+
+async def pay_asiacell(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
     context.user_data["pay_method"] = "Asiacell"
@@ -359,7 +325,7 @@ async def receive_deposit_amount(update: Update, context: ContextTypes.DEFAULT_T
         return WAIT_DEPOSIT_AMOUNT
 
     if amount < MIN_DEPOSIT:
-        await update.message.reply_text(f"❌ الحد الأدنى للشحن هو {"1000"}$")
+        await update.message.reply_text(f"❌ الحد الأدنى للشحن هو {MIN_DEPOSIT}$")
         return WAIT_DEPOSIT_AMOUNT
 
     context.user_data["deposit_amount"] = amount
@@ -376,7 +342,6 @@ async def receive_deposit_proof(update: Update, context: ContextTypes.DEFAULT_TY
     amount  = context.user_data.get("deposit_amount", 0)
     method  = context.user_data.get("pay_method", "unknown")
 
-    # حفظ رابط الصورة أو النص
     if update.message.photo:
         proof = update.message.photo[-1].file_id
     else:
@@ -384,7 +349,6 @@ async def receive_deposit_proof(update: Update, context: ContextTypes.DEFAULT_TY
 
     dep_id = db.create_deposit(user_id, amount, method, proof)
 
-    # إشعار الأدمن مع أزرار القبول/الرفض
     keyboard = InlineKeyboardMarkup([
         [InlineKeyboardButton("✅ قبول",  callback_data=f"dep_approve_{dep_id}"),
          InlineKeyboardButton("❌ رفض",   callback_data=f"dep_reject_{dep_id}")]
@@ -416,9 +380,6 @@ async def receive_deposit_proof(update: Update, context: ContextTypes.DEFAULT_TY
     return ConversationHandler.END
 
 
-# ══════════════════════════════════════════
-#  الأدمن — قبول / رفض شحن
-# ══════════════════════════════════════════
 async def admin_approve_deposit(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     if q.from_user.id != ADMIN_ID:
@@ -428,13 +389,6 @@ async def admin_approve_deposit(update: Update, context: ContextTypes.DEFAULT_TY
     user_id, amount = db.approve_deposit(dep_id)
 
     if user_id:
-        await q.edit_message_caption(
-            caption=q.message.caption + f"\n\n✅ *تمت الموافقة — أضيف {amount}$ لـ {user_id}*",
-            parse_mode="Markdown"
-        ) if q.message.photo else await q.edit_message_text(
-            q.message.text + f"\n\n✅ *تمت الموافقة — أضيف {amount}$ لـ {user_id}*",
-            parse_mode="Markdown"
-        )
         await q.answer("✅ تمت الموافقة")
         try:
             await q.get_bot().send_message(
@@ -459,19 +413,7 @@ async def admin_reject_deposit(update: Update, context: ContextTypes.DEFAULT_TYP
     db.reject_deposit(dep_id)
     await q.answer("❌ تم الرفض")
 
-    edit_text = q.message.caption if q.message.photo else q.message.text
-    try:
-        if q.message.photo:
-            await q.edit_message_caption(caption=edit_text + "\n\n❌ *مرفوض*", parse_mode="Markdown")
-        else:
-            await q.edit_message_text(edit_text + "\n\n❌ *مرفوض*", parse_mode="Markdown")
-    except Exception:
-        pass
 
-
-# ══════════════════════════════════════════
-#  الدعم
-# ══════════════════════════════════════════
 async def support(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
@@ -484,9 +426,6 @@ async def support(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ══════════════════════════════════════════
-#  أوامر الأدمن
-# ══════════════════════════════════════════
 async def admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != ADMIN_ID:
         return
@@ -503,7 +442,6 @@ async def admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def admin_add_balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """استخدام: /addbal <user_id> <amount>"""
     if update.effective_user.id != ADMIN_ID:
         return
     try:
@@ -514,9 +452,6 @@ async def admin_add_balance(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ الاستخدام: /addbal <user_id> <amount>")
 
 
-# ══════════════════════════════════════════
-#  معالج العودة للقائمة
-# ══════════════════════════════════════════
 async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     data = q.data
@@ -534,15 +469,10 @@ async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else: await q.answer()
 
 
-# ══════════════════════════════════════════
-#  تشغيل البوت
-# ══════════════════════════════════════════
 def main():
     db.init_db()
-
     app = Application.builder().token(BOT_TOKEN).build()
 
-    # محادثة الطلب
     order_conv = ConversationHandler(
         entry_points=[CallbackQueryHandler(select_service, pattern=r"^svc_")],
         states={
@@ -553,12 +483,11 @@ def main():
         per_message=False
     )
 
-    # محادثة الشحن
     deposit_conv = ConversationHandler(
         entry_points=[
-    CallbackQueryHandler(pay_mastercard, pattern="^pay_mastercard$"),
-    CallbackQueryHandler(pay_asiacell,   pattern="^pay_asiacell$"),
-],
+            CallbackQueryHandler(pay_mastercard, pattern="^pay_mastercard$"),
+            CallbackQueryHandler(pay_asiacell,   pattern="^pay_asiacell$"),
+        ],
         states={
             WAIT_DEPOSIT_AMOUNT: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_deposit_amount)],
             WAIT_DEPOSIT_PROOF:  [MessageHandler(filters.PHOTO | filters.TEXT,    receive_deposit_proof)],
@@ -575,16 +504,18 @@ def main():
     app.add_handler(CallbackQueryHandler(callback_router))
 
     logger.info("✅ البوت يعمل...")
-    
+
     WEBHOOK_URL = os.getenv("WEBHOOK_URL")
-        PORT = int(os.getenv("PORT", 8443))
-        app.run_webhook(
-            listen="0.0.0.0",
-            port=PORT,
-            webhook_url=f"{WEBHOOK_URL}/webhook",
-            drop_pending_updates=True
-        )
+    PORT = int(os.getenv("PORT", 8443))
+
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=PORT,
+        webhook_url=f"{WEBHOOK_URL}/webhook",
+        drop_pending_updates=True
+    )
 
 
 if __name__ == "__main__":
     main()
+ 
