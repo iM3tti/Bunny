@@ -576,15 +576,15 @@ def main():
 
     logger.info("✅ البوت يعمل...")
     
-WEBHOOK_URL = os.getenv("WEBHOOK_URL")
-PORT = int(os.getenv("PORT", 8443))
-
-app.run_webhook(
-    listen="0.0.0.0",
-    port=PORT,
-    webhook_url=f"{WEBHOOK_URL}/webhook",
-    drop_pending_updates=True
-)
+    WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+    PORT = int(os.getenv("PORT", 8443))
+    
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=PORT,
+        webhook_url=f"{WEBHOOK_URL}/webhook",
+        drop_pending_updates=True
+    )
 
 
 if __name__ == "__main__":
