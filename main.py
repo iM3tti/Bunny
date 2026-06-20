@@ -576,9 +576,8 @@ def main():
 
     logger.info("✅ البوت يعمل...")
     
-    WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
     PORT = int(os.getenv("PORT", 8443))
-    
     app.run_webhook(
         listen="0.0.0.0",
         port=PORT,
