@@ -574,7 +574,7 @@ def main():
     app.add_handler(CallbackQueryHandler(callback_router))
 
     logger.info("✅ البوت يعمل...")
-    import os
+    
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 PORT = int(os.getenv("PORT", 8443))
 
