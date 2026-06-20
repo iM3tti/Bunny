@@ -251,6 +251,13 @@ async def admin_approve_deposit(update: Update, context: ContextTypes.DEFAULT_TY
     if user_id:
         await q.answer("✅ تمت الموافقة")
         try:
+            if q.message.photo:
+                await q.edit_message_caption(caption=q.message.caption + f"\n\n✅ تمت الموافقة — أضيف {amount}$", parse_mode="Markdown")
+            else:
+                await q.edit_message_text(q.message.text + f"\n\n✅ تمت الموافقة — أضيف {amount}$", parse_mode="Markdown")
+        except Exception:
+            pass
+        try:
             await q.get_bot().send_message(user_id,
                 f"🎉 *تم شحن رصيدك!*\n\n💵 المبلغ المضاف: `{amount}$`\n💳 رصيدك الجديد: `{db.get_balance(user_id):.4f}$`",
                 parse_mode="Markdown")
@@ -259,12 +266,33 @@ async def admin_approve_deposit(update: Update, context: ContextTypes.DEFAULT_TY
     else:
         await q.answer("❌ خطأ في قاعدة البيانات", show_alert=True)
 
+
 async def admin_reject_deposit(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     if q.from_user.id != ADMIN_ID:
         await q.answer("⛔ غير مصرح!", show_alert=True); return
-    db.reject_deposit(int(q.data.split("_")[-1]))
+    dep_id = int(q.data.split("_")[-1])
+    db.reject_deposit(dep_id)
     await q.answer("❌ تم الرفض")
+    try:
+        if q.message.photo:
+            await q.edit_message_caption(caption=q.message.caption + "\n\n❌ تم رفض الطلب", parse_mode="Markdown")
+        else:
+            await q.edit_message_text(q.message.text + "\n\n❌ تم رفض الطلب", parse_mode="Markdown")
+    except Exception:
+        pass
+    try:
+        conn = db.get_conn()
+        c = conn.cursor()
+        c.execute("SELECT user_id FROM deposits WHERE id = ?", (dep_id,))
+        row = c.fetchone()
+        conn.close()
+        if row:
+            await q.get_bot().send_message(row[0],
+                f"❌ *تم رفض طلب الشحن*\n\nللاستفسار تواصل مع الدعم: {SUPPORT_USERNAME}",
+                parse_mode="Markdown")
+    except Exception:
+        pass
 
 async def support(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
