@@ -574,7 +574,16 @@ def main():
     app.add_handler(CallbackQueryHandler(callback_router))
 
     logger.info("✅ البوت يعمل...")
-    app.run_polling(drop_pending_updates=True)
+    import os
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+PORT = int(os.getenv("PORT", 8443))
+
+app.run_webhook(
+    listen="0.0.0.0",
+    port=PORT,
+    webhook_url=f"{WEBHOOK_URL}/webhook",
+    drop_pending_updates=True
+)
 
 
 if __name__ == "__main__":
